@@ -101,14 +101,10 @@ namespace Gerador.Mega.Sena
             {
                 var random = new Random();
                 string numeroDaSorte = random.Next(menorNumero, maiorNumero).ToString();
+                numeroDaSorte = Convert.ToInt32(numeroDaSorte) < 10 ? $"0{numeroDaSorte}" : numeroDaSorte;
 
                 if (!numerosDaSorte.Contains(numeroDaSorte.ToString()))
-                {
-                    if (Convert.ToInt32(numeroDaSorte) < 10)
-                        numeroDaSorte = $"0{numeroDaSorte}";
-
                     numerosDaSorte.Add(numeroDaSorte.ToString());
-                }
             }
 
             PulaLinha();
@@ -138,7 +134,7 @@ namespace Gerador.Mega.Sena
             PulaLinha();
 
             PequenaPausa();
-            caracteres = "     Aqui estão os seus números da sorte!".ToCharArray();
+            caracteres = $"     Aqui estão os seus {quantidadeDeNumeros} números da sorte!".ToCharArray();
             EscreverLinha(caracteres);
             PulaLinha();
             PulaLinha();
