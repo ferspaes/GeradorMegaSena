@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Gerador.Mega.Sena
@@ -114,7 +115,7 @@ namespace Gerador.Mega.Sena
             caracteres = $"     >>".ToCharArray();
             Escrever(caracteres);
 
-            foreach (var numeroDaSorte in numerosDaSorte)
+            foreach (var numeroDaSorte in numerosDaSorte.OrderBy(x => x))
             {
                 i++;
 
