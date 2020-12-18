@@ -12,9 +12,12 @@ namespace Gerador.Mega.Sena
             string palavraMenorNumero = string.Empty;
             string palavraMaiorNumero = string.Empty;
             string palavraQuantidadeNumeros = string.Empty;
+            string palavraQuantidadeDeJogadas = string.Empty;
             int menorNumero = 0;
             int maiorNumero = 0;
             int quantidadeDeNumeros = 0;
+            int quantidadeDeJogadas = 0;
+            var jogadas = new List<string>();
 
             PulaLinha();
             PulaLinha();
@@ -87,7 +90,22 @@ namespace Gerador.Mega.Sena
 
             PulaLinha();
 
-            caracteres = $"     Entendido iremos agora gerar os seus {quantidadeDeNumeros} números da sorte, no intervalo entre {menorNumero} e {maiorNumero}!".ToCharArray();
+            while (quantidadeDeJogadas == 0)
+            {
+                caracteres = "     Por favor me diga quantas jogadas você precisa agora?".ToCharArray();
+                EscreverLinha(caracteres);
+
+                PulaLinha();
+                PulaLinha();
+                Espaco();
+
+                palavraQuantidadeDeJogadas = Console.ReadLine();
+                Int32.TryParse(palavraQuantidadeDeJogadas, out quantidadeDeJogadas);
+            }
+
+            PulaLinha();
+
+            caracteres = $"     Entendido iremos agora gerar as suas {quantidadeDeJogadas} jogadas, contendo {quantidadeDeNumeros} números da sorte cada, no intervalo entre {menorNumero} e {maiorNumero}!".ToCharArray();
             EscreverLinha(caracteres);
 
             PulaLinha();
@@ -98,44 +116,51 @@ namespace Gerador.Mega.Sena
 
             var numerosDaSorte = new List<string>();
 
-            while (numerosDaSorte.Count < quantidadeDeNumeros)
+            while (jogadas.Count < quantidadeDeJogadas)
             {
-                var random = new Random();
-                string numeroDaSorte = random.Next(menorNumero, maiorNumero).ToString();
-                numeroDaSorte = Convert.ToInt32(numeroDaSorte) < 10 ? $"0{numeroDaSorte}" : numeroDaSorte;
+                while (numerosDaSorte.Count < quantidadeDeNumeros)
+                {
+                    var random = new Random();
+                    string numeroDaSorte = random.Next(menorNumero, maiorNumero).ToString();
+                    numeroDaSorte = Convert.ToInt32(numeroDaSorte) < 10 ? $"0{numeroDaSorte}" : numeroDaSorte;
 
-                if (!numerosDaSorte.Contains(numeroDaSorte.ToString()))
-                    numerosDaSorte.Add(numeroDaSorte.ToString());
+                    if (!numerosDaSorte.Contains(numeroDaSorte.ToString()))
+                        numerosDaSorte.Add(numeroDaSorte.ToString());
+                }
+
+                numerosDaSorte = numerosDaSorte.OrderBy(x => x).ToList();
+
+                string jogada = string.Join(" - ", numerosDaSorte);
+
+                if (!jogadas.Contains(jogada))
+                    jogadas.Add(jogada.ToString());
+
+                numerosDaSorte.Clear();
             }
 
             PulaLinha();
 
-            int i = 0;
-
-            caracteres = $"     >>".ToCharArray();
-            Escrever(caracteres);
-
-            foreach (var numeroDaSorte in numerosDaSorte.OrderBy(x => x))
+            foreach (var sorte in jogadas)
             {
-                i++;
+                caracteres = $"     >> ".ToCharArray();
+                Escrever(caracteres);
 
-                if (i == 1)
-                    caracteres = $" {numeroDaSorte}".ToCharArray();
-                if (i > 1)
-                    caracteres = $" - {numeroDaSorte} ".ToCharArray();
+                caracteres = sorte.ToCharArray();
 
                 EscreverLinha(caracteres);
+
+                caracteres = $" <<".ToCharArray();
+                Escrever(caracteres);
+                PulaLinha();
+
                 MenorPausa();
             }
-
-            caracteres = $"<<".ToCharArray();
-            Escrever(caracteres);
 
             PulaLinha();
             PulaLinha();
 
             PequenaPausa();
-            caracteres = $"     Aqui estão os seus {quantidadeDeNumeros} números da sorte!".ToCharArray();
+            caracteres = $"     Aqui estão as suas {quantidadeDeJogadas} jogadas, contendo {quantidadeDeNumeros} números da sorte cada!".ToCharArray();
             EscreverLinha(caracteres);
             PulaLinha();
             PulaLinha();
@@ -150,7 +175,7 @@ namespace Gerador.Mega.Sena
 
         private static void MenorPausa()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(800);
         }
 
         private static void Escrever(char[] caracteres)
@@ -165,7 +190,7 @@ namespace Gerador.Mega.Sena
 
         private static void PequenaPausa()
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(1800);
         }
 
         private static void PulaLinha()
@@ -177,7 +202,7 @@ namespace Gerador.Mega.Sena
         {
             foreach (var caracter in caracteres)
             {
-                Thread.Sleep(20);
+                Thread.Sleep(12);
                 Console.Write(caracter);
             }
         }
