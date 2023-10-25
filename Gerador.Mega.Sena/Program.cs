@@ -24,7 +24,7 @@ namespace Gerador.Mega.Sena
             PulaLinha();
             PulaLinha();
 
-            var caracteres = "             -= Gerador de números aleatórios para a Sorte! =-".ToCharArray();
+            var caracteres = "             -= Gerador de números aleatórios para a ganhar na Mega Sena! =-".ToCharArray();
 
             EscreverLinha(caracteres);
             PulaLinha();
